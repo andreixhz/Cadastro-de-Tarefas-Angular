@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Cadastrar nova tarefa</h1>
+<div mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-100">
+        <mat-label>
+            Titulo
+        </mat-label>
+        <input [(ngModel)]="title" matInput placeholder="Ex: Fazer compras">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+        <mat-label>
+            Descrição
+        </mat-label>
+        <textarea [(ngModel)]="description" matInput></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button [disabled]="handing" (click)="handleSave()" mat-flat-button color="accent">
+        Salvar
+        <mat-icon class="ms-2" *ngIf="handing">
+            <mat-spinner diameter="20"></mat-spinner>
+        </mat-icon>    
+    </button>
+    <button mat-button mat-dialog-close>
+        Close
+    </button>
+</div>
