@@ -2,25 +2,96 @@
 
   <h1>Gestão de tarefas</h1>
 
-  <mat-card class="d-flex justify-content-between mb-2">
-    <div class="d-flex align-items-center">
-      <input class="input" placeholder="Pesquisar">
-
-      <button class="mx-2" mat-raised-button color="primary">Pesquisar</button>
-    </div>
-  
+  <mat-card class="d-flex justify-content-between mb-2">  
     <div>
       <button mat-raised-button color="primary" (click)="addNew()">Criar Nova</button>
     </div>
   </mat-card>
 
-  <div *ngIf="loading" class="col-12 justify-content-center d-flex mt-4">
-    <mat-spinner
-      [diameter]="50"
-    ></mat-spinner>
-  </div>
+  <ng-container>
+    <div class="row">
+      <div 
+        class="col-6" 
+        cdkDropList 
+        #todoList="cdkDropList"
+        [cdkDropListData]="tasks.progress.rows"
+        [cdkDropListConnectedTo]="[doneList]"
+        (cdkDropListDropped)="drop($event)"
+        >
+        <h1>{{tasks.progress.title}}</h1>
+        <mat-card class="mb-2 example-box" *ngFor="let task of tasks.progress.rows" cdkDrag>
+          <mat-card-title>
+            <div class="w-100 d-flex justify-content-between align-items-center">
+              #{{ task.id }}
+              <button [disabled]="task.handing" (click)="handleDelete(task)" mat-icon-button [cdkDragDisabled]="task.handing">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-card-title> 
+          <mat-card-subtitle>
+            <p>{{ task.title }}</p>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <p>{{ task.description }}</p>
+          </mat-card-content>
+          <mat-card-actions *ngIf="!task.finished">
+            <button [disabled]="task.handing" (click)="handleFinalizateTask(task, true, true)" mat-button>Concluir</button>
+          </mat-card-actions>
+          <mat-card-footer *ngIf="task.handing">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </mat-card-footer>
+        </mat-card>
 
-  <ng-container *ngIf="!loading">
+        <ngx-skeleton-loader
+          *ngIf="loading"
+          class="ngx-skeleton-loader"
+          count="5"
+          [theme]="{ 
+            'border-radius': '5px',
+            height: '110px',
+            'background-color': '#424242'
+          }"
+          
+        ></ngx-skeleton-loader>
+      
+      </div>
+  
+      <div 
+        class="col-6" 
+        cdkDropList 
+        #doneList="cdkDropList"
+        [cdkDropListConnectedTo]="[todoList]"
+        [cdkDropListData]="tasks.completed.rows"
+        (cdkDropListDropped)="drop($event)"
+        >
+        <h1>{{tasks.completed.title}}</h1>
+        <mat-card class="mb-2 example-box" *ngFor="let task of tasks.completed.rows" cdkDrag [cdkDragDisabled]="task.handing">
+          <mat-card-title>#{{ task.id }}</mat-card-title> 
+          <mat-card-subtitle>{{ task.title }}</mat-card-subtitle>
+          <mat-card-content>
+            <p>{{ task.description }}</p>
+          </mat-card-content>
+          <mat-card-footer *ngIf="task.handing">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </mat-card-footer>
+        </mat-card>
+        
+        <ngx-skeleton-loader
+          *ngIf="loading"
+          class="ngx-skeleton-loader"
+          count="3"
+          [theme]="{ 
+            'border-radius': '5px',
+            height: '110px',
+            'background-color': '#424242'
+          }"
+          
+        ></ngx-skeleton-loader>
+      </div>
+    </div>
+
+
+<!-- 
     <ng-container *ngFor="let section of getSections()">
       <h1>{{tasks[section].title}}</h1>
       <mat-card class="mb-2" *ngFor="let task of tasks[section].rows">
@@ -37,8 +108,9 @@
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </mat-card-footer>
     </mat-card>
-    </ng-container>
-  </ng-container>
+    </ng-container> -->
 
+
+  </ng-container>
 
 </div>

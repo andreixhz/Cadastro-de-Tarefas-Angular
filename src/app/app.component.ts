@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,26 +34,34 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     this.http.get('https://backend-tarefa-teteu.herokuapp.com/tasks/').subscribe((data: Task[]) => {
-      this.tasks.completed.rows = data.filter((task) => task.finished).sort((a, b) => a.id - b.id).reverse();
+      this.tasks.completed.rows = data.filter((task) => task.finished).reverse();
       this.tasks.progress.rows = data.filter((task) => !task.finished).reverse();
       this.loading = false;
     })
 
   }
 
-  handleFinalizateTask(task: Task) {
+  handleFinalizateTask(task: Task, status: boolean, clickButton: boolean = false) {
 
     task.handing = true;
 
-    this.http.patch('https://backend-tarefa-teteu.herokuapp.com/tasks/' + task.id, {}).subscribe(
+    let _task = {
+      ...task,
+      finished: status
+    }
+
+    delete _task.handing;
+
+    this.http.put('https://backend-tarefa-teteu.herokuapp.com/tasks/' + task.id, _task).subscribe(
       (response: any) => {
 
-        task.finished = true
-        this.tasks.progress.rows = this.tasks.progress.rows.filter((_task) => _task.id != task.id)
-        this.tasks.completed.rows.push(task)
-        this.tasks.completed.rows = this.tasks.completed.rows.sort((a, b) => a.id - b.id).reverse();
+        task.finished = status
 
+        if (!clickButton) return;
 
+        console.log('teste')
+        this.tasks.progress.rows = this.tasks.progress.rows.filter((_task) => _task.id !== task.id)
+        this.tasks.completed.rows.unshift(task)
       },
       (error: any) => { },
       () => { task.handing = false }
@@ -83,6 +92,33 @@ export class AppComponent implements OnInit {
 
     });
 
+
+  }
+
+  drop(event: CdkDragDrop<Task[]>) {
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+
+    } else {
+      this.saveTask(event.previousContainer.data[event.previousIndex])
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
+
+  saveTask(task: Task) {
+
+    if (task.finished === false) {
+      this.handleFinalizateTask(task, true);
+    } else {
+      this.handleFinalizateTask(task, false);
+    }
 
   }
 
