@@ -19,7 +19,7 @@
         (cdkDropListDropped)="drop($event)"
         >
         <h1>{{tasks.progress.title}}</h1>
-        <mat-card class="mb-2 example-box" *ngFor="let task of tasks.progress.rows" cdkDrag>
+        <mat-card class="mb-2 example-box grab" *ngFor="let task of tasks.progress.rows" cdkDrag>
           <mat-card-title>
             <div class="w-100 d-flex justify-content-between align-items-center">
               #{{ task.id }}
@@ -65,7 +65,7 @@
         (cdkDropListDropped)="drop($event)"
         >
         <h1>{{tasks.completed.title}}</h1>
-        <mat-card class="mb-2 example-box" *ngFor="let task of tasks.completed.rows" cdkDrag [cdkDragDisabled]="task.handing">
+        <mat-card class="mb-2 example-box grab" *ngFor="let task of tasks.completed.rows" cdkDrag [cdkDragDisabled]="task.handing">
           <mat-card-title>#{{ task.id }}</mat-card-title> 
           <mat-card-subtitle>{{ task.title }}</mat-card-subtitle>
           <mat-card-content>
