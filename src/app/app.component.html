@@ -1,10 +1,14 @@
-<div class="mt-3 container">
+<div class="full-size">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- <div class="mt-3 container">
 
   <h1>Gestão de tarefas</h1>
 
   <mat-card class="d-flex justify-content-between mb-2">  
     <div>
-      <button mat-raised-button color="primary" (click)="addNew()">Criar Nova</button>
+      <button mat-raised-button color="primary" (clickd)="addNew()">Criar Nova</button>
     </div>
   </mat-card>
 
@@ -90,27 +94,6 @@
       </div>
     </div>
 
-
-<!-- 
-    <ng-container *ngFor="let section of getSections()">
-      <h1>{{tasks[section].title}}</h1>
-      <mat-card class="mb-2" *ngFor="let task of tasks[section].rows">
-      <mat-card-title>#{{ task.id }}</mat-card-title> 
-      <mat-card-subtitle>{{ task.title }}</mat-card-subtitle>
-      <mat-card-content>
-        <p>{{ task.description }}</p>
-      </mat-card-content>
-      <mat-card-actions *ngIf="!task.finished">
-        <button [disabled]="task.handing" (click)="handleFinalizateTask(task)" mat-button>Concluir</button>
-        <button [disabled]="task.handing" (click)="handleDelete(task)" mat-button>Deletar</button>
-      </mat-card-actions>
-      <mat-card-footer *ngIf="task.handing">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </mat-card-footer>
-    </mat-card>
-    </ng-container> -->
-
-
   </ng-container>
 
-</div>
+</div> -->

@@ -1,0 +1,33 @@
+<div class="full-center" [formGroup]="formRegister">
+    <h1>Registrar</h1>
+    <mat-card class="login">
+        <mat-card-content>
+            <div class="row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Nome de Usuario</mat-label>
+                    <input formControlName="username" matInput placeholder="Ex. pat@example.com" />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input type="email" formControlName="email" matInput placeholder="Ex. pat@example.com" />
+                </mat-form-field>
+    
+                <mat-form-field appearance="fill">
+                    <mat-label>Senha</mat-label>
+                    <input formControlName="password" matInput placeholder="Ex. pat@example.com" type="password"/>
+                </mat-form-field>
+            </div>
+            <button (click)="handleCreate()" [disabled]="formRegister.invalid" mat-flat-button color="accent" class="me-2">
+                Criar
+                <mat-icon class="ms-2" *ngIf="loading">
+                    <mat-spinner diameter="20"></mat-spinner>
+                </mat-icon>    
+            </button>
+
+            <button [routerLink]="'login'" mat-button color="accent">
+                Entrar
+            </button>
+        </mat-card-content>
+    </mat-card>
+</div>
